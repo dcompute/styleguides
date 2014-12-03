@@ -28,11 +28,11 @@
 
     ```haml
     -# Good
-    = link_to "foo", bar, attributes: "pushing to 80 chars", data:
-      {foo: "bar", biz: "baz", fiz: "buzz"}
+    = link_to "foo", bar, title: "pushing to 80 chars",
+      data: {foo: "bar", biz: "baz", fiz: "buzz"}
 
     -# Bad
-    = link_to "foo", bar, attributes: "pushing to 80 chars", data: {foo: "bar",
+    = link_to "foo", bar, title: "pushing to 80 chars", data: {foo: "bar",
       biz: "baz", fiz: "buzz"}
     ```
 
@@ -73,8 +73,11 @@
     -# Good
     %li{data: {foo: "bar"}}
 
+    -# Good (As of HAML 4.0)
+    %li{data: {foo_bar: "biz baz"}}
+
     -# Okay
-    %li{data: {:"street-address" => "1234"}}
+    %li{ng: {:"ruined-markup" => "1234"}}
 
     -# Bad
     %li{data: {:foo => "bar"}}
@@ -216,29 +219,29 @@
   - IDs and Classes should use _lower_ `dash-case-for-names`.
 
   - Templates must have a Class or ID at the root level which
-    matches the file name. Examples:
+    matches the partial's file name. Examples:
 
-    - File named: `_stream_card_date.html.haml`
+    - File named: `_stream_card.html.haml`
 
       ```haml
       -# Good
-      .stream-card-date
+      .stream-card
         %h3
           Stream Card
 
       -# Good
-      %li.stream-card-date
+      %li.stream-card
         %h3
           Stream Card
 
       -# Good
-      %li.stream-card-date.media-card
+      %li.stream-card.media-card
         %h3
           Stream Card
 
       -# Bad
       %li
-        .stream-card-date
+        .stream-card
           %h3
             Stream Card
       ```
@@ -256,8 +259,8 @@
         I'm the right rail!
       ```
 
-  - Provide content semantic classnames when possible. These are particularly
-    useful for providing selectors to our test suite.
+  - Provide content relational classnames when possible. These become
+    particularly resourceful as references in tests.
 
     ```haml
     -# Good
@@ -282,7 +285,7 @@
 
 ## <a name='rails-helpers'>Rails Helpers</a>
 
-  - Use built-in Rails element helpers whenever possible:
+  - Use Rails' ActionView element helpers whenever possible:
 
     ```haml
     -# Good
@@ -311,11 +314,26 @@
         Edit this
     ```
 
+  - Avoid usage of `content_tag` and `tag` in views, they rarely end up
+    being useful.
+
+    ```haml
+    -# Bad
+    = content_tag :p, "Not sure if serious"
+
+    -# Bad
+    = tag "br"
+
+    -# Good
+    %p
+      "Not sure if serious"
+    ```
+
 
 ## <a name='interpolation'>Interpolation</a>
 
   - Always use double quotes, even if you don't need to interpolate. Helps
-    make code changes a bit cleaner later.
+    keep later code changes cleaner.
 
   - Use curly braces when you need multiple tags within a single line:
 
@@ -361,7 +379,7 @@
     %form{anything: "you already failed"}
     ```
 
-  - Aways apply labels to form inputs, radios, and checkboxes.
+  - Always apply labels to form inputs, radios, and checkboxes.
 
   - Always use Rails' built in `remote: true` option for links, forms, or buttons
     that trigger AJAX requests.
@@ -380,7 +398,7 @@
 
 ## <a name='content-for-blocks'>Content For Blocks</a>
 
-  - Place `content_for` blocks at the head of a file or parent block.
+  - Place `content_for` blocks at the top of a view file or parent block.
 
   - Always put `:javascript`, `:coffeescript`, or `:css` blocks in an appropriate
     `content_for` block. Eg- `- content_for :head` for CSS or `- content_for :footer`
@@ -389,7 +407,7 @@
 
 ## <a name='scripting-hooks'>Scripting Hooks</a>
 
-  - Please use `[data-trigger]` attributes as hooks whenever possible.
+  - Use `[data-trigger]` attributes as hooks whenever possible.
 
   - Never apply JavaScript to a style-oriented selector. Add a data
     attribute or classname that is free of styles for binding functionality.
