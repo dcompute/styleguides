@@ -16,4 +16,4 @@ specific rules.
 
 ## Contributors:
 * [Christine Tadler](https://github.com/tadler)
-* [Alexander Støver](http://binaerpilot.no)
+* [Alexander Støver](https://github.com/Destru)
